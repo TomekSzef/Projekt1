@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AutoWebApp.Models.SparePart>
+@inject IHttpContextAccessor HttpContextAccessor
+@using AutoWebApp.Tools
+@{
+    ViewData["Title"] = "Show Order";
+}
+
+<h1>Twoje zamówienie</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Zdjęcie
+            </th>
+            <th>
+                Nazwa części
+            </th>
+            <th>
+                Model
+            </th>
+            <th>
+                Cena
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var id in HttpContextAccessor.HttpContext.Session.Get<List<int>>("_Order"))
+        {
+            @foreach (var item in Model.Where(i => i.PartID == id))
+            {
+                <tr>
+                    <td>
+                        <img src="https://freepngimg.com/thumb/wrench/3-wrench-spanner-png-image-.png" height="100" width="100"/>
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.PartName)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.VehicleModel)
+                    </td>
+                    <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                    <a asp-action="AddToOrder" asp-route-id="@item.PartID" asp-route-delete="true">Usuń</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+    <form asp-action="Order">
+        <div class="form-group">
+            <input type="submit" value="Zamów" class="btn btn-primary" />
+        </div>
+    </form>
+</table>

@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@inject IHttpContextAccessor HttpContextAccessor
+<div class="text-center">
+    <h2 class="display-4">Wybierz markę samochodu @HttpContextAccessor.HttpContext.Session.GetString("_CurrentFirstName")</h2>
+    <form asp-controller="SpareParts" asp-action="ShowParts">
+        <div class="row gap-2" style="height:300px; font-size:50px;">
+        <input class="btn btn-primary col" type="submit" asp-controller="SpareParts" asp-action="ShowParts" asp-route-carbrand="audi" style="font-size:50px;" value="AUDI">
+        <input class="btn btn-primary col" type="submit" asp-controller="SpareParts" asp-action="ShowParts" asp-route-carbrand="bmw" style="font-size:50px;" value="BMW">
+        </div>
+    </form>
+    
+</div>

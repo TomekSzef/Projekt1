@@ -1,0 +1,51 @@
+﻿@model AutoWebApp.Models.SparePart
+@inject IHttpContextAccessor HttpContextAccessor
+@using AutoWebApp.Tools
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SparePart</h4>
+    <hr />
+    <dl class="row">
+        
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PartName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PartName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleModel)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VehicleModel)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (HttpContextAccessor.HttpContext.Session.Get<bool>("_IsAdmin") == true)
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.PartID">Edit</a>
+        <a asp-action="Index">Back to List</a>
+    }
+    else
+    {
+        <a asp-action="ShowParts" asp-route-carBrand="@Model.VehicleModel.Trim().Split(' ').FirstOrDefault()">Wróć do sklepu</a>
+    }
+</div>

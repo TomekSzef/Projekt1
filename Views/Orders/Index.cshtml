@@ -1,0 +1,42 @@
+﻿@model List<Order>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID zamówienia
+            </th>
+            <th>
+                Zamawiający
+            </th>
+            <th>
+                Zamówiona część
+            </th>
+            <th>
+                Model
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        @foreach (var s in item.SpareParts)
+        {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.OrderID)</td>
+            <td>@Html.DisplayFor(modelItem => item.Customer.Email)</td>
+            <td>
+                @Html.DisplayFor(modelItem => s.PartName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => s.VehicleModel)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
+            </td>
+        </tr>
+        }
+
+}
+    </tbody>
+</table>
