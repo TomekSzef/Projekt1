@@ -11,18 +11,51 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoWebApp.Migrations
 {
     [DbContext(typeof(AutoWebAppContext))]
-    [Migration("20240214223757_removeadmins")]
-    partial class removeadmins
+    [Migration("20240216202230_testsetup")]
+    partial class testsetup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.15")
+                .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AutoWebApp.Models.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<int>("CustomerID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("AutoWebApp.Models.OrderSparePart", b =>
+                {
+                    b.Property<int>("OrdersOrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SparePartsPartID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdersOrderID", "SparePartsPartID");
+
+                    b.HasIndex("SparePartsPartID");
+
+                    b.ToTable("OrderSparePart");
+                });
 
             modelBuilder.Entity("AutoWebApp.Models.SparePart", b =>
                 {
@@ -84,6 +117,49 @@ namespace AutoWebApp.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserID = 1,
+                            Email = "admin@admin",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            LastName = "Admin",
+                            NIP = "",
+                            Password = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("AutoWebApp.Models.Order", b =>
+                {
+                    b.HasOne("AutoWebApp.Models.User", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("AutoWebApp.Models.OrderSparePart", b =>
+                {
+                    b.HasOne("AutoWebApp.Models.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersOrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AutoWebApp.Models.SparePart", null)
+                        .WithMany()
+                        .HasForeignKey("SparePartsPartID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AutoWebApp.Models.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,25 +9,25 @@ namespace AutoWebApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "SparePart",
-                type: "ntext",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "text");
+            //migrationBuilder.AlterColumn<string>(
+            //    name: "Description",
+            //    table: "SparePart",
+            //    type: "ntext",
+            //    nullable: false,
+            //    oldClrType: typeof(string),
+            //    oldType: "text");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "SparePart",
-                type: "text",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "ntext");
+            //migrationBuilder.AlterColumn<string>(
+            //    name: "Description",
+            //    table: "SparePart",
+            //    type: "text",
+            //    nullable: false,
+            //    oldClrType: typeof(string),
+            //    oldType: "ntext");
         }
     }
 }

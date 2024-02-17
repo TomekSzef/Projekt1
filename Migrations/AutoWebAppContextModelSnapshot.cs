@@ -34,7 +34,24 @@ namespace AutoWebApp.Migrations
 
                     b.HasKey("OrderID");
 
+                    b.HasIndex("CustomerID");
+
                     b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("AutoWebApp.Models.OrderSparePart", b =>
+                {
+                    b.Property<int>("OrdersOrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SparePartsPartID")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdersOrderID", "SparePartsPartID");
+
+                    b.HasIndex("SparePartsPartID");
+
+                    b.ToTable("OrderSparePart", (string)null);
                 });
 
             modelBuilder.Entity("AutoWebApp.Models.SparePart", b =>
@@ -111,22 +128,18 @@ namespace AutoWebApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("OrderSparePart", b =>
+            modelBuilder.Entity("AutoWebApp.Models.Order", b =>
                 {
-                    b.Property<int>("OrdersOrderID")
-                        .HasColumnType("int");
+                    b.HasOne("AutoWebApp.Models.User", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("SparePartsPartID")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdersOrderID", "SparePartsPartID");
-
-                    b.HasIndex("SparePartsPartID");
-
-                    b.ToTable("OrderSparePart");
+                    b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("OrderSparePart", b =>
+            modelBuilder.Entity("AutoWebApp.Models.OrderSparePart", b =>
                 {
                     b.HasOne("AutoWebApp.Models.Order", null)
                         .WithMany()
@@ -139,6 +152,11 @@ namespace AutoWebApp.Migrations
                         .HasForeignKey("SparePartsPartID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AutoWebApp.Models.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
